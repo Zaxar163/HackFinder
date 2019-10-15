@@ -15,6 +15,10 @@ import org.objectweb.asm.tree.MethodInsnNode;
 
 public class ModScan {
 	public static void main(final String[] args) throws FileNotFoundException {
+		if (args.length < 2) {
+			System.out.println("Usage: <mods dir> <log file>");
+			System.exit(1);
+		}
 		final File mods = new File(args[0]);
 		try (PrintStream log = new PrintStream(new FileOutputStream(args[1]))) {
 			Arrays.stream(mods.listFiles()).filter(e -> e.getName().endsWith(".jar") || e.getName().endsWith(".zip"))
