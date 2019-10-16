@@ -16,6 +16,7 @@ repositories {
 
 dependencies {
 	compile group: 'org.ow2.asm', name: 'asm-commons', version: '7.2'
+	compile group: 'org.ow2.asm', name: 'asm-util', version: '7.2'
 }
 
 jar {

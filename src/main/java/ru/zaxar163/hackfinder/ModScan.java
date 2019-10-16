@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.zip.ZipFile;
@@ -14,13 +15,13 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 
 public class ModScan {
-	public static void main(final String[] args) throws FileNotFoundException {
+	public static void main(final String[] args) throws FileNotFoundException, UnsupportedEncodingException {
 		if (args.length < 2) {
 			System.out.println("Usage: <mods dir> <log file>");
 			System.exit(1);
 		}
 		final File mods = new File(args[0]);
-		try (PrintStream log = new PrintStream(new FileOutputStream(args[1]))) {
+		try (PrintStream log = new PrintStream(new FileOutputStream(args[1]), false, "UTF-8")) {
 			Arrays.stream(mods.listFiles()).filter(e -> e.getName().endsWith(".jar") || e.getName().endsWith(".zip"))
 					.map(e -> {
 						try {
