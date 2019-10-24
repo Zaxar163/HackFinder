@@ -11,6 +11,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.jar.JarFile;
 
 import org.objectweb.asm.ClassReader;
@@ -79,18 +80,23 @@ public class RCEFinder {
 		System.gc();
 	}
 
-	public static void proc(ClassMetadataReader r, PrintStream out, MethodInsnNode m) {
+	public static boolean proc(ClassMetadataReader r, PrintStream out, MethodInsnNode m) {
+		AtomicBoolean b = new AtomicBoolean(false);
 		try {
 			final ClassNode n = new ClassNode();
 			new ClassReader(r.getClassData(m.owner)).accept(n, ClassReader.SKIP_FRAMES);
 			n.methods.forEach(u -> {
 				if (u.name.equals(m.name))
 					for (final AbstractInsnNode p1 : u.instructions.toArray())
-						if (checkInsn(p1, u, n, r, out)) return;
+						if (checkInsn(p1, u, n, r, out)) {
+							b.set(true);
+							return;
+						}
 			});
 		} catch (final Throwable t) {
 			t.printStackTrace(System.err);
 		}
+		return b.get();
 	}
 	private static boolean checkInsn(AbstractInsnNode p1, MethodNode u, ClassNode n, ClassMetadataReader r, PrintStream out) {
 		if (p1 instanceof MethodInsnNode) {
@@ -102,8 +108,7 @@ public class RCEFinder {
 				out.println(n.name + "#"
 						+ u.name);
 				return true;
-			} else proc(r, out, p);
-		}
-		return false;
+			} else return proc(r, out, p);
+		} else return false;
 	}
 }
