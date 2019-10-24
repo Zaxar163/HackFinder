@@ -1,4 +1,4 @@
-package ru.zaxar163.hackfinder;
+package ru.zaxar163.helper;
 
 import java.io.File;
 import java.io.IOException;
