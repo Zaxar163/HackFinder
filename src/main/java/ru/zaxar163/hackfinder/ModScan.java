@@ -17,7 +17,7 @@ import org.objectweb.asm.tree.MethodInsnNode;
 public class ModScan {
 	public static void main(final String[] args) throws FileNotFoundException, UnsupportedEncodingException {
 		if (args.length < 2) {
-			System.out.println("Usage: <mods dir> <log file>");
+			System.out.println("Usage: packethack <mods dir> <log file>");
 			System.exit(1);
 		}
 		final File mods = new File(args[0]);
@@ -47,6 +47,7 @@ public class ModScan {
 													log.println(new File(e.getName()).getName() + "=" + n.name + "#"
 															+ u.name);
 												}
+												return;
 											}
 									});
 								} catch (final Throwable t) {

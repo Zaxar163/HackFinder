@@ -21,5 +21,5 @@ dependencies {
 
 jar {
 	from { configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) } }
-	manifest.attributes("Main-Class": "ru.zaxar163.hackfinder.ModScan")
+	manifest.attributes("Main-Class": "ru.zaxar163.hackfinder.MainReal")
 }
