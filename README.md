@@ -1,2 +1,2 @@
 # HackFinder
-* Usage: java -jar HackFinder.jar \<mods dir\> \<log file\>
+* Usage: `java -jar HackFinder.jar` to get help
