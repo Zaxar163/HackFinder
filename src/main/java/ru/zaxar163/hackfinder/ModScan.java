@@ -42,8 +42,7 @@ public class ModScan {
 												final MethodInsnNode p = (MethodInsnNode) p1;
 												if (p.name.toLowerCase(Locale.US)
 														.contains("readItemStack".toLowerCase(Locale.US))
-														|| p.name.toLowerCase(Locale.US)
-														.contains("func_150791_c")) {
+														|| p.name.toLowerCase(Locale.US).contains("func_150791_c")) {
 													System.out.println("Class " + n.name
 															+ " may has packethack in method " + u.name);
 													log.println(new File(e.getName()).getName() + "=" + n.name + "#"

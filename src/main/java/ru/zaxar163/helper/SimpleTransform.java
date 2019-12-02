@@ -10,14 +10,14 @@ import org.objectweb.asm.util.ASMifier;
 import org.objectweb.asm.util.TraceClassVisitor;
 
 public class SimpleTransform {
-	public static void main(String[] args) throws IOException {
-		File in = new File("in");
-		File out = new File("out");
+	public static void main(final String[] args) throws IOException {
+		final File in = new File("in");
+		final File out = new File("out");
 		out.mkdir();
-		for (File f : in.listFiles(e -> e.getName().endsWith(".class"))) {
-			File fout = new File(out, f.getName().concat(".java"));
+		for (final File f : in.listFiles(e -> e.getName().endsWith(".class"))) {
+			final File fout = new File(out, f.getName().concat(".java"));
 			try (PrintWriter w = new PrintWriter(fout, "UTF-8")) {
-				ClassReader cr = new ClassReader(Files.readAllBytes(f.toPath()));
+				final ClassReader cr = new ClassReader(Files.readAllBytes(f.toPath()));
 				cr.accept(new TraceClassVisitor(null, new ASMifier(), new PrintWriter(w)), 2);
 			}
 		}
