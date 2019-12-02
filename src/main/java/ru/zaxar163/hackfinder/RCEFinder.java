@@ -46,7 +46,7 @@ public class RCEFinder {
 	}
 
 	public static void main(final String[] args) throws IOException {
-		if (args.length < 2) {
+		if (args.length < 3) {
 			System.out.println("Usage: rce <mods dir> <libraries dir> <log file>");
 			System.exit(1);
 		}
@@ -66,7 +66,7 @@ public class RCEFinder {
 		}, true);
 		conc.addAll(mods);
 		conc.addAll(libraries);
-		try (PrintStream log = new PrintStream(new FileOutputStream(args[1]), false, "UTF-8");
+		try (PrintStream log = new PrintStream(new FileOutputStream(args[2]), false, "UTF-8");
 				ClassMetadataReader cp = new ClassMetadataReader()) {
 			cp.getCp().addAll(conc);
 			walk(log, cp);
