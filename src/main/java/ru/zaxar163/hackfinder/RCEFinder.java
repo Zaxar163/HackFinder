@@ -32,7 +32,8 @@ public class RCEFinder {
 	}
 
 	private static boolean checkInsn(final AbstractInsnNode p1, final MethodNode u, final ClassNode n,
-			final ClassMetadataReader r, final PrintStream out) {
+			final ClassMetadataReader r, final PrintStream out, int i) {
+		if (i > Byte.MAX_VALUE*4) return false;
 		if (p1 instanceof MethodInsnNode) {
 			final MethodInsnNode p = (MethodInsnNode) p1;
 			if (p.name.toLowerCase(Locale.US).contains("defineClass".toLowerCase(Locale.US))) {
@@ -40,7 +41,7 @@ public class RCEFinder {
 				out.println(n.name + "#" + u.name);
 				return true;
 			} else
-				return proc(r, out, p);
+				return proc(r, out, p, i+1);
 		} else
 			return false;
 	}
@@ -73,15 +74,16 @@ public class RCEFinder {
 		}
 	}
 
-	public static boolean proc(final ClassMetadataReader r, final PrintStream out, final MethodInsnNode m) {
+	public static boolean proc(final ClassMetadataReader r, final PrintStream out, final MethodInsnNode m, int i) {
 		final AtomicBoolean b = new AtomicBoolean(false);
+		if (i > Byte.MAX_VALUE*4) return b.get();
 		try {
 			final ClassNode n = new ClassNode();
 			new ClassReader(r.getClassData(m.owner)).accept(n, ClassReader.SKIP_FRAMES);
 			n.methods.forEach(u -> {
 				if (u.name.equals(m.name))
 					for (final AbstractInsnNode p1 : u.instructions.toArray())
-						if (checkInsn(p1, u, n, r, out)) {
+						if (checkInsn(p1, u, n, r, out, i+1)) {
 							b.set(true);
 							return;
 						}
@@ -102,7 +104,7 @@ public class RCEFinder {
 						new ClassReader(e.getInputStream(a)).accept(n, ClassReader.SKIP_FRAMES);
 						n.methods.forEach(u -> {
 							for (final AbstractInsnNode p1 : u.instructions.toArray())
-								if (checkInsn(p1, u, n, cp, log))
+								if (checkInsn(p1, u, n, cp, log, 1))
 									return;
 						});
 					} catch (final Throwable t) {
