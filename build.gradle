@@ -1,5 +1,7 @@
 plugins {
 	id 'java'
+	id 'eclipse'
+	id 'idea'
 }
 
 tasks.withType(JavaCompile) {
